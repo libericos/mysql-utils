@@ -6,12 +6,15 @@ MySQL management utils
 This script makes a backup of a database for a specific host.  
 To run the script should put the arguments in the correct order:
 ```
-backup.sh [username] [password] [host] [database]
+backup.sh [-u|--username username] [-p|--password password] [-h|--host host] [-d|--database database] [-f|--file file]
 ```
-- username: the name of the user of database
-- password: the password of the user of database
-- host: the IP or URL where is the database
-- database: the name of the database yopu want make the backup  
+- -u|--username: Username with acces to database"
+- -p|--pasword: Password of the user"
+- -h|--host: Host where is the database"
+- -d|--database: Name of database you want make the backup"
+- -f|--file: OPTIONAL: file where you want save the backup"
+- >The file that it auto-generated have this format:"
+- >```(database)-[date][.sql.bz2]"```
 
 ##### [Download](backup.sh)
 
