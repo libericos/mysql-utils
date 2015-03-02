@@ -1,3 +1,7 @@
+red='\033[0;31m'
+green='\033[0;32m'
+NC='\033[0m' # No Color
+
 if [ "$1" = "--h" ] || [ "$1" = "--help" ]; then
 	echo "For use correctly this script you should run:"
 	echo "$0 [-u|--username username] [-p|--password password] [-h|--host host] [-d|--database database] [-f|--file file]"
@@ -48,30 +52,30 @@ elif [ "$#" = 8 ] || [ "$#" = 10 ]; then
 	done
 
 	if [ -z "$username" ]; then
-		echo "Error: param username not found: [-u|--username username]"
+		echo -e "${red}Error: parameter username not found: [-u|--username username]${NC}"
 		error=1
 	fi
 	if [ -z "$password" ]; then
-		echo "Error: param password not found: [-p|--password password]"
+		echo -e "${red}Error: parameter password not found: [-p|--password password]${NC}"
 		error=1
 	fi
 	if [ -z "$host" ]; then
-		echo "Error: param host not found: [-h|--host host]"
+		echo -e "${red}Error: parameter host not found: [-h|--host host]${NC}"
 		error=1
 	fi
 	if [ -z "$database" ]; then
-		echo "Error: param database not found: [-d|--database database]"
+		echo -e "${red}Error: parameter database not found: [-d|--database database]${NC}"
 		error=1
 	fi
 	aux="$(echo ${file} | cut -d'-' -f1)"
 	if [ -z "$aux" ] || [ "$aux" != "$database" ]; then
-		echo "Error: format of file incorrect: (database)-[date][.sql.bz2]"
+		echo -e "${red}Error: format of file incorrect: (database)-[date][.sql.bz2]${NC}"
 		error=1
 	fi
 
 	if [ -z "$error" ]; then
 		echo "Running backup for $database"
-		echo "Command: mysqldump --opt --protocol=tcp --host=$host --user=$username --password=$password $database | bzip2 > $file"
+		echo -e "Command: ${green}mysqldump --opt --protocol=tcp --host=$host --user=$username --password=$password $database | bzip2 > $file${NC}"
 		mysqldump --opt --protocol=tcp --host=$host --user=$username --password=$password $database | bzip2 > $file
 
 		echo "File created: $file"
@@ -79,6 +83,6 @@ elif [ "$#" = 8 ] || [ "$#" = 10 ]; then
 	fi
 	
 else
-	echo "Error: wrong number of parameters ($# of 8 or 10): $0 [-u|--username username] [-p|--password password] [-h|--host host] [-d|database database] [-f|--file file]"
-	echo "$0 -h for print help"
+	echo -e "${red}Error: wrong number of parameters ($# of 8 or 10): $0 [-u|--username username] [-p|--password password] [-h|--host host] [-d|--database database] [-f|--file file]${NC}"
+	echo "$0 --h for print help"
 fi
