@@ -55,7 +55,8 @@ elif [ "$#" = 8 ]; then
 		error=1
 	fi
 	database=$(echo ${file} | cut -d'-' -f1)
-	if [ -z "$database" ]; then
+	regex="^$database-.*\.bz2"
+	if ! echo "$file" | grep -q "$regex"; then
 		echo -e "${red}Error: format of file incorrect: (database)-[date][.sql.bz2]${NC}"
 		error=1
 	fi
@@ -69,7 +70,12 @@ elif [ "$#" = 8 ]; then
 		echo -e "Command: ${green}bzip2 -dc $file | mysql --protocol=tcp --host=$host --user=$username --password=$password $database${NC}"
 		bzip2 -dc $file | mysql --protocol=tcp --host=$host --user=$username --password=$password $database
 
-		echo "Restoring of data completed"
+		if [ $? -eq 0 ]; then
+			echo "Restoring of data completed"
+		else
+			echo -e "${red}Error: exited with $?${NC}"
+		fi
+		exit $?
 	fi
 	
 else

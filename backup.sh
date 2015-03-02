@@ -67,8 +67,8 @@ elif [ "$#" = 8 ] || [ "$#" = 10 ]; then
 		echo -e "${red}Error: parameter database not found: [-d|--database database]${NC}"
 		error=1
 	fi
-	aux="$(echo ${file} | cut -d'-' -f1)"
-	if [ -z "$aux" ] || [ "$aux" != "$database" ]; then
+	regex="^$database-.*\.bz2"
+	if ! echo "$file" | grep -q "$regex"; then
 		echo -e "${red}Error: format of file incorrect: (database)-[date][.sql.bz2]${NC}"
 		error=1
 	fi
@@ -78,8 +78,13 @@ elif [ "$#" = 8 ] || [ "$#" = 10 ]; then
 		echo -e "Command: ${green}mysqldump --opt --protocol=tcp --host=$host --user=$username --password=$password $database | bzip2 > $file${NC}"
 		mysqldump --opt --protocol=tcp --host=$host --user=$username --password=$password $database | bzip2 > $file
 
-		echo "File created: $file"
-		ls -l $file
+		if [ $? -eq 0 ]; then
+			echo "File created: $file"
+			ls -l $file
+		else
+			echo -e "${red}Error: exited with $?${NC}"
+		fi
+		exit $?
 	fi
 	
 else
