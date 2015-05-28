@@ -34,3 +34,10 @@ restore.sh  [-u|--username username] [-p|--password password] [-h|--host host] [
     * ```(database)-[date][.sql.bz2]  ```
 
 ##### [Download](restore.sh)
+
+## Create a MySQL database
+This script create a MySQL database:
+```
+create-database.sh [database] [username] [password]
+```
+##### [Download](create-database.sh) 
