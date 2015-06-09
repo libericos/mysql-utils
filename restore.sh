@@ -4,21 +4,24 @@ NC='\033[0m' # No Color
 
 if [ "$1" = "--h" ] || [ "$1" = "--help" ]; then
 	echo -e "For use correctly this script you should run:"
-	echo -e "$0 [-u|--username username] [-p|--password password] [-h|--host host] [-f|--file file]"
+	echo -e "$0 [-h|--host host] [-u|--username username] [-p|--password password] [-d|--database database] [-f|--file file]"
 	echo -e "********** Parameters *************"
-	echo -e "-u|--username		Username with acces to database"
-	echo -e "-p|--pasword		Password of the user"
-	echo -e "-h|--host		Host where is the database"
-	echo -e "-f|--file		File where find all data you want restore"
-	echo -e "			The file should have this format:"
-	echo -e "				(database)-[date][.sql.bz2]"
+	echo -e "-h|--host		Database host"
+	echo -e "-u|--username		Database username"
+	echo -e "-p|--password		Database password"
+	echo -e "-h|--host		Database name"
+	echo -e "-f|--file		File where find all data you want restore bzip compressed (.bz2)"
 	echo -e "--h|--help		Print this message"
-elif [ "$#" = 8 ]; then
+elif [ "$#" = 10 ]; then
 	echo "The number of parameters are correct"
 
 	while [[ $# > 1 ]]; do
 		param="$1"
 		case $param in
+			-h|--host)
+			host="$2"
+			shift
+			;;
 			-u|--username)
 			username="$2"
 			shift
@@ -27,8 +30,8 @@ elif [ "$#" = 8 ]; then
 			password="$2"
 			shift
 			;;
-			-h|--host)
-			host="$2"
+			-d|--database)
+			database="$2"
 			shift
 			;;
 			-f|--file)
@@ -42,6 +45,10 @@ elif [ "$#" = 8 ]; then
 		shift
 	done
 
+	if [ -z "$host" ]; then
+		echo -e "${red}Error: param host not found: [-h|--host host]${NC}"
+		error=1
+	fi
 	if [ -z "$username" ]; then
 		echo -e "${red}Error: param username not found: [-u|--username username]${NC}"
 		error=1
@@ -50,14 +57,8 @@ elif [ "$#" = 8 ]; then
 		echo -e "${red}Error: param password not found: [-p|--password password]${NC}"
 		error=1
 	fi
-	if [ -z "$host" ]; then
-		echo -e "${red}Error: param host not found: [-h|--host host]${NC}"
-		error=1
-	fi
-	database=$(echo ${file} | cut -d'-' -f1)
-	regex="^$database-.*\.bz2"
-	if ! echo "$file" | grep -q "$regex"; then
-		echo -e "${red}Error: format of file incorrect: (database)-[date][.sql.bz2]${NC}"
+	if [ -z "$database" ]; then
+		echo -e "${red}Error: param database not found: [-d|--database database]${NC}"
 		error=1
 	fi
 	if [ ! -r "$file" ]; then
@@ -79,6 +80,6 @@ elif [ "$#" = 8 ]; then
 	fi
 	
 else
-	echo -e "${red}Error: wrong number of parameters ($# of 8): $0 [-u|--username username] [-p|--password password] [-h|--host host] [-f|--file file]${NC}"
+	echo -e "${red}Error: wrong number of parameters ($# of 10): $0 [-h|--host host] [-u|--username username] [-p|--password password] [-d|--database database] [-f|--file file]${NC}"
 	echo "$0 --h for print help"
 fi
