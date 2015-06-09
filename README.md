@@ -3,41 +3,27 @@ MySQL management utils
 
 ## Managing backups of MySQL
 ### Backup
-This script makes a backup of a database for a specific host.  
-To run the script should put the arguments in the correct order:
+This script makes a backup of a database for a specific host. 
+Run help to view the script options 
 ```
-backup.sh [-u|--username username] [-p|--password password] [-h|--host host] [-d|--database database] [-f|--file file]
+backup.sh [--h|--help]
 ```
-- -u|--username: Username with acces to database  
-- -p|--pasword: Password of the user  
-- -h|--host: Host where is the database  
-- -d|--database: Name of database you want make the backup  
-- -f|--file: OPTIONAL: file where you want save the backup  
-    * The file that it auto-generated have this format:  
-    * ```(database)-[date][.sql.bz2]  ```
 
 ##### [Download](backup.sh)
 
 ### Restore
-This script restore the database from a file in your system.  
-Only works if the file is compresed with Bzip2 and have this format:  
-`[database]-[date].sql.bz2`  
-To run the script should put the arguments in the correct order:
+This script restore the database from a Bz2 compressed file
+Run help to view the script options:
 ```
-restore.sh  [-u|--username username] [-p|--password password] [-h|--host host] [-f|--file file]
+restore.sh  [--h|--help]
 ```
-- -u|--username: Username with acces to database  
-- -p|--pasword: Password of the user  
-- -h|--host: Host where is the database  
-- -f|--file: File where find all data you want restore  
-    * The file that it auto-generated have this format:  
-    * ```(database)-[date][.sql.bz2]  ```
 
 ##### [Download](restore.sh)
 
 ## Create a MySQL database
-This script create a MySQL database:
+This script create a MySQL database.
+Run help to view the script options:
 ```
-create-database.sh [database] [username] [password]
+create-database.sh [--h|--help]
 ```
 ##### [Download](create-database.sh) 
